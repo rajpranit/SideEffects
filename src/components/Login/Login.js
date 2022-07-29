@@ -42,19 +42,20 @@ const Login = (props) => {
     isValid: undefined,
   });
 
-  // useEffect(() => {
-  //   const timeHandler = setTimeout(() => {
-  //     console.log("checking form validation");
-  //     setFormIsValid(
-  //       enteredEmail.includes("@") && enteredPassword.trim().length > 6
-  //     );
-  //   }, 500);
+  const { isValid: emailIsValid } = emailState;
+  const { isValid: passwordIsValid } = passwordState;
 
-  //   return () => {
-  //     console.log(timeHandler);
-  //     clearTimeout(timeHandler);
-  //   };
-  // }, [enteredEmail, enteredPassword]);
+  useEffect(() => {
+    const timeHandler = setTimeout(() => {
+      console.log("checking form validation");
+      setFormIsValid(emailState.isValid && passwordState.isValid);
+    }, 500);
+
+    return () => {
+      console.log(timeHandler);
+      clearTimeout(timeHandler);
+    };
+  }, [emailIsValid, passwordIsValid]);
 
   const emailChangeHandler = (event) => {
     dispatchEmail({ type: "USER_INPUT", val: event.target.value });
@@ -67,12 +68,6 @@ const Login = (props) => {
   const passwordChangeHandler = (event) => {
     dispatchPassword({ type: "INPUT_PASSWORD", val: event.target.value });
   };
-
-  useEffect(() => {
-    setFormIsValid(
-      emailState.value.includes("@") && passwordState.value.length > 7
-    );
-  }, [passwordState.value, emailState.value]);
 
   const validatePasswordHandler = () => {
     dispatchPassword({ type: "INPUT_BLUR_P" });
